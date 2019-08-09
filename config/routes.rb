@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy', as: :logout
 
 	# resources :merchants do
-	#   resources :items, only: [:index]
+	#   resources :items, only: [:index, :new, :create, :update]
 	# end
 
 	get '/merchants', to: 'merchants#index', as: :merchants
@@ -72,15 +72,26 @@ Rails.application.routes.draw do
 
   namespace :merchant_admins do
     resources :items, only: [:new, :create, :edit, :update, :destroy]
-		resources :users
     resources :orders, only: [:show, :update]
   end
+
+	# post 'merchant_admins/items', to: 'merchant_admins/items#create', as: :merchant_admins_items
+	# get 'merchant_admins/items/new', to: 'merchant_admins/items#new', as: :new_merchant_admins_item
+	# get 'merchant_admins/items/:item_id/edit', to: 'merchant_admins/items#edit', as: :edit_merchant_admins_item
+	# patch 'merchant_admins/items/:item_id', to: 'merchant_admins/items#update'
+	# delete 'merchant_admins/items/:item_id', to: 'merchant_admins/items#destroy', as: :merchant_admins_item
+
+	# get 'merchant_admins/orders', to: 'merchant_admins/orders#show', as: :merchant_admins_order
+	# patch 'merchant_admins/orders/:order_id', to: 'merchant_admins/orders#update'
 
   patch '/admin/orders/:id', to: 'admin/orders#update', as: :ship_order
 
   namespace :admin do
-    resources :users
+    resources :users, only: [:index, :show]
   end
+
+	# get '/admin/users', to: 'admin/users#index'
+	# get '/admin/users/:user_id', to: 'admin/users#show
 
 	get '/merchant/items', to: 'merchant_admins/items#index', as: :only_merchants_items
 
