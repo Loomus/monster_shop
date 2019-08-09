@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   root 'welcome#index'
   get '/login', to: 'sessions#new', as: :login
   post '/login', to: 'sessions#create', as: :register
@@ -31,7 +32,11 @@ Rails.application.routes.draw do
 	get '/items/:item_id/reviews/new', to: 'reviews#new', as: :new_item_review
 	post '/items/:item_id/reviews', to: 'reviews#create', as: :item_reviews
 
-  resources :reviews, only: [:edit, :update, :destroy]
+  # resources :reviews, only: [:update, :destroy]
+
+	get '/reviews/:id/edit', to: 'reviews#edit', as: :edit_review
+	patch '/reviews/:id', to: 'reviews#update', as: :review
+	delete '/reviews/:id', to: 'reviews#destroy'
 
   get '/cart', to: 'cart#show', as: 'cart'
 	post '/cart/:item_id', to: 'cart#add_item', as: 'add_to_cart'
@@ -40,9 +45,19 @@ Rails.application.routes.draw do
   delete '/cart/:item_id', to: 'cart#remove_item', as: 'remove_item'
 
   get '/register/new', to: 'users#new', as: :new_user
-  resources :users, only: [:create, :show, :edit, :update] do
-  	resources :orders, only: [:create, :show]
-  end
+
+  # resources :users, only: [:create, :show, :edit, :update] do
+  # 	resources :orders, only: [:create, :show]
+  # end
+
+	post '/users', to: 'users#create'
+	get '/users/:id', to: 'users#show', as: :user
+	get '/users/:id/edit', to: 'users#edit', as: :edit_user
+	patch '/users/:id', to: 'users#update'
+
+	post '/users/:user_id/orders', to: 'orders#create', as: :user_orders
+	get '/users/:user_id/orders/:order_id', to: 'orders#show', as: :user_order
+
 
   get '/profile', to: 'users#show', as: :profile
   get '/profile/orders', to: 'orders#index', as: :profile_orders
