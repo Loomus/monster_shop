@@ -1,16 +1,35 @@
 Rails.application.routes.draw do
   root 'welcome#index'
-  get '/login', to: 'sessions#new', as: 'login'
-  post '/login', to: 'sessions#create', as: 'register'
-  delete '/logout', to: 'sessions#destroy', as: 'logout'
+  get '/login', to: 'sessions#new', as: :login
+  post '/login', to: 'sessions#create', as: :register
+  delete '/logout', to: 'sessions#destroy', as: :logout
 
-  resources :merchants do
-    resources :items, only: [:index, :new, :create, :update]
-  end
+	# resources :merchants do
+	#   resources :items, only: [:index]
+	# end
 
-  resources :items, only: [:index, :show] do
-    resources :reviews, only: [:new, :create]
-  end
+	get '/merchants', to: 'merchants#index', as: :merchants
+	get '/merchants/new', to: 'merchants#new', as: :new_merchant
+	post '/merchants', to: 'merchants#create'
+	get '/merchants/:id', to: 'merchants#show', as: :merchant
+	get '/merchants/:id/edit', to: 'merchants#edit', as: :edit_merchant
+	patch '/merchants/:id', to: 'merchants#update'
+	delete '/merchants/:id', to: 'merchants#destroy'
+
+	get '/merchants/:merchant_id/items', to: 'items#index', as: :merchant_items
+	get '/merchants/:id/items/new', to: 'items#new', as: :new_merchant_item
+	post '/merchants/:id/items', to: 'items#create'
+	patch '/merchants/:id/items/:item_id', to: 'items#update', as: :merchant_item
+
+  # resources :items, only: [:index, :show] do
+  #   resources :reviews, only: [:new, :create]
+  # end
+
+	get '/items', to: 'items#index', as: :items
+	get '/items/:id', to: 'items#show', as: :item
+
+	get '/items/:item_id/reviews/new', to: 'reviews#new', as: :new_item_review
+	post '/items/:item_id/reviews', to: 'reviews#create', as: :item_reviews
 
   resources :reviews, only: [:edit, :update, :destroy]
 
@@ -39,17 +58,14 @@ Rails.application.routes.draw do
   namespace :merchant_admins do
     resources :items, only: [:new, :create, :edit, :update, :destroy]
 		resources :users
-  end
-  namespace :merchant_admins do
-    resources :items, only: [:update, :new, :create]
     resources :orders, only: [:show, :update]
   end
+
   patch '/admin/orders/:id', to: 'admin/orders#update', as: :ship_order
 
   namespace :admin do
     resources :users
   end
-
 
 	get '/merchant/items', to: 'merchant_admins/items#index', as: :only_merchants_items
 
