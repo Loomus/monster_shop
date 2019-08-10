@@ -5,10 +5,6 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create', as: :register
   delete '/logout', to: 'sessions#destroy', as: :logout
 
-	# resources :merchants do
-	#   resources :items, only: [:index, :new, :create, :update]
-	# end
-
 	get '/merchants', to: 'merchants#index', as: :merchants
 	get '/merchants/new', to: 'merchants#new', as: :new_merchant
 	post '/merchants', to: 'merchants#create'
@@ -22,17 +18,11 @@ Rails.application.routes.draw do
 	post '/merchants/:id/items', to: 'items#create'
 	patch '/merchants/:id/items/:item_id', to: 'items#update', as: :merchant_item
 
-  # resources :items, only: [:index, :show] do
-  #   resources :reviews, only: [:new, :create]
-  # end
-
 	get '/items', to: 'items#index', as: :items
 	get '/items/:id', to: 'items#show', as: :item
 
 	get '/items/:item_id/reviews/new', to: 'reviews#new', as: :new_item_review
 	post '/items/:item_id/reviews', to: 'reviews#create', as: :item_reviews
-
-  # resources :reviews, only: [:update, :destroy]
 
 	get '/reviews/:id/edit', to: 'reviews#edit', as: :edit_review
 	patch '/reviews/:id', to: 'reviews#update', as: :review
@@ -46,10 +36,6 @@ Rails.application.routes.draw do
 
   get '/register/new', to: 'users#new', as: :new_user
 
-  # resources :users, only: [:create, :show, :edit, :update] do
-  # 	resources :orders, only: [:create, :show]
-  # end
-
 	post '/users', to: 'users#create'
 	get '/users/:id', to: 'users#show', as: :user
 	get '/users/:id/edit', to: 'users#edit', as: :edit_user
@@ -57,7 +43,6 @@ Rails.application.routes.draw do
 
 	post '/users/:user_id/orders', to: 'orders#create', as: :user_orders
 	get '/users/:user_id/orders/:order_id', to: 'orders#show', as: :user_order
-
 
   get '/profile', to: 'users#show', as: :profile
   get '/profile/orders', to: 'orders#index', as: :profile_orders
@@ -75,23 +60,11 @@ Rails.application.routes.draw do
     resources :orders, only: [:show, :update]
   end
 
-	# post 'merchant_admins/items', to: 'merchant_admins/items#create', as: :merchant_admins_items
-	# get 'merchant_admins/items/new', to: 'merchant_admins/items#new', as: :new_merchant_admins_item
-	# get 'merchant_admins/items/:item_id/edit', to: 'merchant_admins/items#edit', as: :edit_merchant_admins_item
-	# patch 'merchant_admins/items/:item_id', to: 'merchant_admins/items#update'
-	# delete 'merchant_admins/items/:item_id', to: 'merchant_admins/items#destroy', as: :merchant_admins_item
-
-	# get 'merchant_admins/orders', to: 'merchant_admins/orders#show', as: :merchant_admins_order
-	# patch 'merchant_admins/orders/:order_id', to: 'merchant_admins/orders#update'
-
   patch '/admin/orders/:id', to: 'admin/orders#update', as: :ship_order
 
   namespace :admin do
     resources :users, only: [:index, :show]
   end
-
-	# get '/admin/users', to: 'admin/users#index'
-	# get '/admin/users/:user_id', to: 'admin/users#show
 
 	get '/merchant/items', to: 'merchant_admins/items#index', as: :only_merchants_items
 
